@@ -40,7 +40,6 @@ def RandomInterval(interval):
 	else:
 		return logging.info("unable to parse CHAOS_INTERVAL, provide in valid format")
 
-	#rand.Seed(time.Now().UnixNano())
 	waitTime = lowerBound + random.randint(0, upperBound-lowerBound)
 	logging.info("[Wait]: Wait for the random chaos interval %s",(waitTime))
 	WaitForDuration(waitTime)

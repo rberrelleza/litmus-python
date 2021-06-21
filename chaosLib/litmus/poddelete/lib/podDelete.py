@@ -17,9 +17,10 @@ def PreparePodDelete(experimentsDetails , resultDetails, eventsDetails, chaosDet
 
 	#Waiting for the ramp time before chaos injection
 	if experimentsDetails.RampTime != 0 :
-		logging.info("[Ramp]: Waiting for the %s ramp time before injecting chaos",(experimentsDetails.RampTime))
+		logging.info("[Ramp]: Waiting for the %s ramp time before injecting chaos",experimentsDetails.RampTime)
 		common.WaitForDuration(experimentsDetails.RampTime)
 	
+	# mode for chaos injection
 	if experimentsDetails.Sequence.lower() == "serial":
 		err = injectChaosInSerialMode(experimentsDetails, chaosDetails, eventsDetails, resultDetails, clients)
 		if err != None:
@@ -33,15 +34,15 @@ def PreparePodDelete(experimentsDetails , resultDetails, eventsDetails, chaosDet
 
 	#Waiting for the ramp time after chaos injection
 	if experimentsDetails.RampTime != 0 :
-		logging.info("[Ramp]: Waiting for the %s ramp time after injecting chaos",(experimentsDetails.RampTime))
+		logging.info("[Ramp]: Waiting for the %s ramp time after injecting chaos",experimentsDetails.RampTime)
 		common.WaitForDuration(experimentsDetails.RampTime)
+
 	return None
 
 # injectChaosInSerialMode delete the target application pods serial mode(one by one)
 def injectChaosInSerialMode(experimentsDetails , chaosDetails , eventsDetails , resultDetails, clients): 
 	
 	status = Application()
-	
 	pods = Pods()
 	GracePeriod = 0
 	
@@ -58,12 +59,12 @@ def injectChaosInSerialMode(experimentsDetails , chaosDetails , eventsDetails , 
 		targetPodList, err = pods.GetPodList(experimentsDetails.TargetPods, experimentsDetails.PodsAffectedPerc, chaosDetails, clients)
 		if err != None: 
 			return err
-		
+
 		podNames = []
 		for pod in targetPodList.items:
 			podNames.append(pod.metadata.name)
 		
-		logging.info("[Info]: Target pods list, %s",(podNames))
+		logging.info("[Info]: Target pods list, %s",podNames)
 
 		if experimentsDetails.EngineName != "" :
 			msg = "Injecting " + experimentsDetails.ExperimentName + " chaos on application pod"
@@ -76,9 +77,9 @@ def injectChaosInSerialMode(experimentsDetails , chaosDetails , eventsDetails , 
 			logging.info("[Info]: Killing the following pods, PodName : %s", pod.metadata.name)
 			try:
 				if experimentsDetails.Force == True:
-					err = clients.clientk8s.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS, grace_period_seconds=GracePeriod)
+					err = clients.clientCoreV1.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS, grace_period_seconds=GracePeriod)
 				else:
-					err = clients.clientk8s.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS)
+					err = clients.clientCoreV1.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS)
 			except Exception as e:
 				return e
 
@@ -110,7 +111,6 @@ def injectChaosInParallelMode(experimentsDetails , chaosDetails , eventsDetails 
 	
 	status = Application()
 	pods = Pods()
-
 	GracePeriod = 0
 	
 	#ChaosStartTimeStamp contains the start timestamp, when the chaos injection begin
@@ -126,6 +126,7 @@ def injectChaosInParallelMode(experimentsDetails , chaosDetails , eventsDetails 
 		targetPodList, err = pods.GetPodList(experimentsDetails.TargetPods, experimentsDetails.PodsAffectedPerc, chaosDetails, clients)
 		if err != None:
 			return err
+		
 		podNames = []
 		for pod in targetPodList.items:
 			podNames.append(str(pod.metadata.name))
@@ -142,9 +143,9 @@ def injectChaosInParallelMode(experimentsDetails , chaosDetails , eventsDetails 
 			logging.info("[Info]: Killing the following pods, PodName : %s", pod.metadata.name)
 			try:
 				if experimentsDetails.Force == True:
-					clients.clientk8s.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS, grace_period_seconds=GracePeriod)
+					clients.clientCoreV1.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS, grace_period_seconds=GracePeriod)
 				else:
-					clients.clientk8s.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS)
+					clients.clientCoreV1.delete_namespaced_pod(pod.metadata.name, experimentsDetails.AppNS)
 			except Exception as err:
 				return err	
 		

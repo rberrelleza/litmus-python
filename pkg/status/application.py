@@ -51,7 +51,7 @@ class Application(object):
 		try:
 			time.sleep(self.delay)
 			if init < self.timeout:
-				podList = clients.clientk8s.list_namespaced_pod(appNs, label_selector=appLabel)
+				podList = clients.clientCoreV1.list_namespaced_pod(appNs, label_selector=appLabel)
 				if len(podList.items) == 0:
 					raise Exception("Unable to find the pods with matching labels")
 				for pod in podList.items:
@@ -126,8 +126,7 @@ class Application(object):
 			err = self.CheckApplicationStatus(AppInfo[0], AppInfo[1])
 			if err != None:
 				return err
-			
-		
+
 		return None
 	
 	# CheckPodStatusPhase is helper to checks the running status of the application pod
@@ -136,7 +135,7 @@ class Application(object):
 		try:
 			time.sleep(self.delay)
 			if init < self.timeout:
-				podList = clients.clientk8s.list_namespaced_pod(appNs, label_selector=appLabel)
+				podList = clients.clientCoreV1.list_namespaced_pod(appNs, label_selector=appLabel)
 				for pod in podList.items:
 					if str(pod.status.phase) != states: 
 						raise Exception("Pod is not yet in %s state(s)",(states))
@@ -154,13 +153,13 @@ class Application(object):
 	def CheckPodStatus(self, clients, appNs, appLabel, tries):
 		return self.CheckPodStatusPhase(clients, appNs, appLabel, "Running", tries)
 	
-	#CheckContainerStatus checks the status of the application container
+	#CheckContainerStatus checks the status of the application container for given timeout, if it does not match label it will 
 	def CheckContainerStatus(self, clients, appNs, appLabel, containerName, init):
 		
 		try:
 			time.sleep(self.delay)
 			if init < self.timeout:
-				podList = clients.clientk8s.list_namespaced_pod(appNs, label_selector=appLabel)
+				podList = clients.clientCoreV1.list_namespaced_pod(appNs, label_selector=appLabel)
 				
 				if len(podList.items) == 0:
 					raise Exception("Unable to find the pods with matching labels")
@@ -216,7 +215,7 @@ class Application(object):
 			if init < self.timeout:
 			
 				try:
-					podList = clients.clientk8s.list_namespaced_pod(appNs, label_selector=appLabel)
+					podList = clients.clientCoreV1.list_namespaced_pod(appNs, label_selector=appLabel)
 				except Exception as e:
 					return e
 				# it will check for the status of helper pod, if it is Succeeded and target container is completed then it will marked it as completed and return
@@ -258,7 +257,7 @@ class Application(object):
 			time.sleep(self.delay)
 			if init < self.timeout:
 				try:
-					podList = clients.clientk8s.list_namespaced_pod(appNs, label_selector=appLabel)
+					podList = clients.clientCoreV1.list_namespaced_pod(appNs, label_selector=appLabel)
 				except Exception as e:
 					return e
 				for  pod in podList.items:

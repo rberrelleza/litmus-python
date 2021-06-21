@@ -4,6 +4,8 @@ import logging
 logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)s', level=logging.INFO)  
 import os
 
+# deployment derive the deployment details belongs to the given labels
+# it extract the parent name from the owner references
 def deployment(targetPod,chaosDetails, clients):
 	try:
 		deployList = clients.clientApps.list_namespaced_deployment(chaosDetails.AppDetail.Namespace, label_selector=chaosDetails.AppDetail.Label)
@@ -25,6 +27,9 @@ def deployment(targetPod,chaosDetails, clients):
 							logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s",chaosDetails.AppDetail.Kind, deploy.metadata.name, deploy.metadata.namespace)
 							return True, None
 	return False, False
+
+# statefulset derive the statefulset details belongs to the given target pod
+# it extract the parent name from the owner references
 def statefulset(targetPod,chaosDetails, clients):
 	
 	try:
@@ -42,6 +47,8 @@ def statefulset(targetPod,chaosDetails, clients):
 					logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s",chaosDetails.AppDetail.Kind, sts.metadata.name, sts.metadata.namespace)
 					return True, None
 
+# daemonset derive the daemonset details belongs to the given target pod
+# it extract the parent name from the owner references
 def daemonset(targetPod, chaosDetails, clients):
 	
 	try:
@@ -59,7 +66,9 @@ def daemonset(targetPod, chaosDetails, clients):
 					logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s",chaosDetails.AppDetail.Kind, ds.metadata.name, ds.metadata.namespace)
 					return True, None
 
-def deploymentconfig(targetPod, chaosDetails, clients):
+# deploymentConfig derive the deploymentConfig details belongs to the given target pod
+# it extract the parent name from the owner references
+def deploymentConfig(targetPod, chaosDetails, clients):
 
 	try:
 		deploymentConfigList = clients.clientDyn.resources.get(api_version="v1", kind="DeploymentConfig", group="apps.openshift.io", label_selector=chaosDetails.AppDetail.Label)
@@ -74,7 +83,7 @@ def deploymentconfig(targetPod, chaosDetails, clients):
 			for own in range(rcOwnerRef):
 				if own.kind == "ReplicationController":
 					try:
-						rc = clients.clientk8s.read_namespaced_replication_controller(own.name, chaosDetails.AppDetail.Namespace)
+						rc = clients.clientCoreV1.read_namespaced_replication_controller(own.name, chaosDetails.AppDetail.Namespace)
 					except Exception as e:
 						return False, e
 					
@@ -84,6 +93,8 @@ def deploymentconfig(targetPod, chaosDetails, clients):
 							logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s",chaosDetails.AppDetail.Kind, dc.metadata.name, dc.metadata.namespace)
 							return True, None
 
+# rollout derive the rollout details belongs to the given target pod
+# it extract the parent name from the owner references
 def rollout(targetPod, chaosDetails, clients):
 	
 	try:
@@ -117,7 +128,7 @@ def PodParentAnnotated(argument, targetPod, chaosDetails, clients):
 	elif argument == "daemonset": 
 		return daemonset(targetPod,chaosDetails, clients)
 	elif argument == "deploymentConfig": 
-		return deploymentconfig(targetPod,chaosDetails, clients)
+		return deploymentConfig(targetPod,chaosDetails, clients)
 	elif argument == "rollout" : 
 		return rollout(targetPod,chaosDetails, clients)
 	else:

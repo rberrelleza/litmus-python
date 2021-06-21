@@ -44,7 +44,7 @@ def CreateEvents(eventsDetails , chaosDetails, kind, eventName, clients):
 			count=1,
 			)
 	try:
-		clients.clientk8s.create_namespaced_event(chaosDetails.ChaosNamespace, body=body)
+		clients.clientCoreV1.create_namespaced_event(chaosDetails.ChaosNamespace, body=body)
 	except Exception as exp:
 		return logging.error("Failed to create event with err: %s", exp)
 	return None
@@ -64,7 +64,7 @@ def GenerateEvents(eventsDetails, chaosDetails, kind, clients):
 		eventName = eventsDetails.Reason + chaosDetails.ExperimentName + str(chaosDetails.ChaosUID)
 		event = client.V1Event
 		try:
-			 event = clients.clientk8s.read_namespaced_event(name = eventName,namespace = chaosDetails.ChaosNamespace)
+			 event = clients.clientCoreV1.read_namespaced_event(name = eventName,namespace = chaosDetails.ChaosNamespace)
 		except Exception as e:
 			if K8serror().IsNotFound(err=e):
 				try:
@@ -80,7 +80,7 @@ def GenerateEvents(eventsDetails, chaosDetails, kind, clients):
 		event.source.component = chaosDetails.ChaosPodName
 		event.message = eventsDetails.Message
 		try:
-			clients.clientk8s.patch_namespaced_event(eventName, chaosDetails.ChaosNamespace, body = event)
+			clients.clientCoreV1.patch_namespaced_event(eventName, chaosDetails.ChaosNamespace, body = event)
 		except ApiException as e:
 			return e
 	return None

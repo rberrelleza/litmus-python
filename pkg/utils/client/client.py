@@ -3,15 +3,15 @@ from kubernetes import client, config, dynamic
 from kubernetes.client import api_client
 
 # Client Class is maintaining clients for k8s
-class Client(object):
+class K8sClient(object):
     def __init__(self, conf=None):
-        self.clientk8s      =  client.CoreV1Api(conf)
+        self.clientCoreV1   =  client.CoreV1Api(conf)
         self.clientDyn      =  dynamic.DynamicClient(api_client.ApiClient(configuration=conf))
         self.clientApps     =  client.AppsV1Api(conf)
         self.clientsAppsV1  = client.AppsV1beta1Api(conf)
 
 # Config maintain configuration for in and out cluster
-class Configs(object):
+class Configuration(object):
 
     def __init__(self, kubeContext=None, configurations=None):
         self.kubeContext    = kubeContext

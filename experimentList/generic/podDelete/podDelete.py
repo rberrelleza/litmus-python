@@ -12,6 +12,7 @@ logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)
 
 # PodDelete inject the pod-delete chaos
 def PodDelete(clients):
+
 	experimentsDetails = ExperimentDetails()
 	resultDetails = types.ResultDetails()
 	eventsDetails = types.EventDetails()
@@ -21,9 +22,10 @@ def PodDelete(clients):
 	result = ChaosResults()
 	
 	#Fetching all the ENV passed from the runner pod
-	logging.info("[PreReq]: Getting the ENV for the %s experiment", experimentsDetails.ExperimentName)
 	GetENV(experimentsDetails)
 	
+	
+	logging.info("[PreReq]: Initialise Chaos Variables for the %s experiment", experimentsDetails.ExperimentName)
 	# Intialise the chaos attributes
 	InitialiseChaosVariables(chaosDetails, experimentsDetails)
 	

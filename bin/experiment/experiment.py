@@ -4,7 +4,7 @@ import experimentList.generic.podDelete.podDelete as podDelete
 import argparse
 import os
 import logging
-from pkg.utils.client.client import Configs, Client
+from pkg.utils.client.client import Configuration, K8sClient
 
 logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)s', level=logging.INFO)  
 def main():
@@ -23,8 +23,8 @@ def main():
                     help="Kubernetes client ignore SSL")
 	args = parser.parse_args()
 	
-	config = Configs(kubeContext=args.kubeContext)
-	clients = Client(conf = config.get_config())
+	config = Configuration(kubeContext=args.kubeContext)
+	clients = K8sClient(conf = config.get_config())
 	logging.info("Experiment Name: {}".format(args.experimentName))
 
 	# invoke the corresponding experiment based on the the (-name) flag

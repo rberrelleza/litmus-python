@@ -89,7 +89,7 @@ class ProbeStatus(object):
 		self.Type    = Type
 		self.Status  = Status
 
-		# ENVDetails contains the ENV details
+# ENVDetails contains the ENV details
 class ENVDetails(object):
 	def __init__(self):
 		self.ENV = []

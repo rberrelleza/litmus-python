@@ -47,7 +47,7 @@ class ChaosResults(object):
 		if chaosDetails.EngineName != "" and resultDetails.Phase != "Stopped" :
 			# Getting chaos pod label and passing it in chaos result
 			try:
-				chaosPod = clients.clientk8s.read_namespaced_pod(chaosDetails.ChaosPodName, chaosDetails.ChaosNamespace)
+				chaosPod = clients.clientCoreV1.read_namespaced_pod(chaosDetails.ChaosPodName, chaosDetails.ChaosNamespace)
 			except Exception as e:
 				return logging.error("failed to find chaos pod with name: %s, err: %s",(chaosDetails.ChaosPodName, e))
 
@@ -72,11 +72,12 @@ class ChaosResults(object):
 	def InitializeChaosResult(self, chaosDetails , resultDetails , chaosResultLabel, 
 		passedRuns = 0,  failedRuns = 0, stoppedRuns = 0, probeSuccessPercentage = "Awaited") :
 		
+
 		try:	
 			env_tmpl = Environment(loader=PackageLoader('pkg', 'templates'), trim_blocks=True, lstrip_blocks=True,
 									autoescape=select_autoescape(['yaml']))
 			template = env_tmpl.get_template('chaos-result.j2')
-			updated_chaosresult_template = template.render(name=resultDetails.Name, namespace=chaosDetails.ChaosNamespace, labels=chaosResultLabel,
+			updated_chaosresult_template = template.render(name=resultDetails.Name, namespace=chaosDetails.ChaosNamespace, labels=chaosResultLabel, instanceId=chaosDetails.InstanceID,
 														engineName=chaosDetails.EngineName, failStep=resultDetails.FailStep, experimentName=chaosDetails.ExperimentName, phase=resultDetails.Phase, 
 													verdict=resultDetails.Verdict, passedRuns = passedRuns,  failedRuns = failedRuns, stoppedRuns = stoppedRuns, probeSuccessPercentage=probeSuccessPercentage)
 			with open('chaosresult.yaml', "w+") as f:
