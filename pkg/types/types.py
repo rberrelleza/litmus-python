@@ -65,7 +65,7 @@ class EventDetails(object):
 # ChaosDetails is for collecting all the global variables
 class ChaosDetails(object):
 	def __init__(self, ChaosPodName=None, ChaosNamespace=None, EngineName=None, InstanceID=None, ExperimentName=None, Timeout=None, 
-	Delay=None, ChaosDuration=None, JobCleanupPolicy=None, ProbeImagePullPolicy=None, Randomness=None,
+	Delay=None, ChaosDuration=None, JobCleanupPolicy=None,  Randomness=None,
 	Namespace=None, Label=None, Kind=None, AnnotationCheck=None, AnnotationKey=None, AnnotationValue=None, UID=None
 	):
 		self.ChaosUID             = UID
@@ -79,7 +79,6 @@ class ChaosDetails(object):
 		self.AppDetail            = AppDetails(Namespace, Label, Kind, AnnotationCheck, AnnotationKey, AnnotationValue)
 		self.ChaosDuration        = ChaosDuration
 		self.JobCleanupPolicy     = JobCleanupPolicy
-		self.ProbeImagePullPolicy = ProbeImagePullPolicy
 		self.Randomness           = Randomness
 
 # ProbeStatus defines information about the status and result of the probes

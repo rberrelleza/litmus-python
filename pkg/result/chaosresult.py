@@ -1,24 +1,23 @@
-from kubernetes import client, config
 import time
 import logging
-logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)s', level=logging.INFO)  
-from jinja2 import Environment,  select_autoescape, PackageLoader
 import os
 import subprocess
+from jinja2 import Environment, select_autoescape, PackageLoader
 import pkg.events.events as events
 import pkg.types.types as types
-from kubernetes import client, config, dynamic
-from kubernetes.client import api_client
 
+# ChaosResult Class to Create, Path and track result details
 class ChaosResults(object):
 
-	def Checkresults(self, clients, chaosDetails, resultDetails , state, iter):
+	# CheckResults list the Chaos Results, if not then return empty dictionary
+	def CheckResults(self, clients, chaosDetails, resultDetails , state, iter):
 
+		# Initialise result list
 		resultList = {}
 		items = 0
-		try:
-			time.sleep(2)
-			if iter < 20:
+		time.sleep(2)
+		if iter < 20:
+			try:
 				chaosResults = clients.clientDyn.resources.get(api_version="litmuschaos.io/v1alpha1", kind="ChaosResult").get()
 				if len(chaosResults.items) == 0:
 					raise Exception("Unable to find the chaosresult with matching labels")
@@ -27,21 +26,22 @@ class ChaosResults(object):
 						resultList[items] = result
 						items = items + 1
 				return resultList
-		except Exception as e:
-			if e != None:
-				self.Checkresults(clients, chaosDetails, resultDetails , state, iter = iter + 2)
+			except Exception as e:
+				return self.CheckResults(clients, chaosDetails, resultDetails , state, iter = iter + 2)
+
 		return resultList
 
 	#ChaosResult Create and Update the chaos result
 	def ChaosResult(self, chaosDetails, resultDetails , state, clients):
 	
+		# Initialise experimentLabel
 		experimentLabel = {}
 		
 		# It will list all the chaos-result with matching label
 		# it will retries until it got chaos result list or met the timeout(3 mins)
 		# Note: We have added labels inside chaos result and looking for matching labels to list the chaos-result
-		#var resultList *v1alpha1.ChaosResultList
-		resultList = self.Checkresults(clients, chaosDetails, resultDetails , state, 0)
+		resultList = self.CheckResults(clients, chaosDetails, resultDetails , state, 0)
+		
 		# as the chaos pod won't be available for stopped phase
 		# skipping the derivation of labels from chaos pod, if phase is stopped
 		if chaosDetails.EngineName != "" and resultDetails.Phase != "Stopped" :

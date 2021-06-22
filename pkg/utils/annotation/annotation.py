@@ -1,17 +1,13 @@
 
-from kubernetes.client.rest import ApiException
 import logging
-logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)s', level=logging.INFO)  
-import os
 
 # deployment derive the deployment details belongs to the given labels
 # it extract the parent name from the owner references
 def deployment(targetPod,chaosDetails, clients):
-	try:
-		deployList = clients.clientApps.list_namespaced_deployment(chaosDetails.AppDetail.Namespace, label_selector=chaosDetails.AppDetail.Label)
-	except ApiException as e:
-	 	return False, logging.error("no deployment found with matching label, err: %s",(e))
-	
+	deployList = clients.clientApps.list_namespaced_deployment(chaosDetails.AppDetail.Namespace, label_selector=chaosDetails.AppDetail.Label)
+	if len(deployList.items) == 0:
+		return False, ValueError("no deployment found with matching label")
+
 	for deploy in deployList.items:
 		if str(deploy.metadata.annotations.get(chaosDetails.AppDetail.AnnotationKey) != None) == str((chaosDetails.AppDetail.AnnotationValue == 'true')):
 			rsOwnerRef = targetPod.metadata.owner_references
@@ -32,13 +28,10 @@ def deployment(targetPod,chaosDetails, clients):
 # it extract the parent name from the owner references
 def statefulset(targetPod,chaosDetails, clients):
 	
-	try:
-		stsList = clients.clientApps.list_namespaced_stateful_set("litmus")
-	except Exception as e:
-		return False, e
+	stsList = clients.clientApps.list_namespaced_stateful_set("litmus")
 	if len(stsList.items) == 0:
-		return False, logging.error("no statefulset found with matching label")
-	
+		return False, ValueError("no statefulset found with matching label")
+
 	for sts in stsList.items:
 		if str(sts.metadata.annotations.get(chaosDetails.AppDetail.AnnotationKey) != None) == str((chaosDetails.AppDetail.AnnotationValue == 'true')):
 			ownerRef = targetPod.metadata.owner_references
@@ -51,12 +44,9 @@ def statefulset(targetPod,chaosDetails, clients):
 # it extract the parent name from the owner references
 def daemonset(targetPod, chaosDetails, clients):
 	
-	try:
-		dsList = clients.clientApps.list_namespaced_daemon_set(chaosDetails.AppDetail.Namespace, label_selector=chaosDetails.AppDetail.Label)
-	except Exception as e:
-		return False, e
+	dsList = clients.clientApps.list_namespaced_daemon_set(chaosDetails.AppDetail.Namespace, label_selector=chaosDetails.AppDetail.Label)
 	if len(dsList.items) == 0:
-		return False, logging.error("no daemonset found with matching label")
+		return False, ValueError("no daemonset found with matching label")
 	
 	for ds in dsList.items:
 		if str(ds.metadata.annotations.get(chaosDetails.AppDetail.AnnotationKey) != None) == str((chaosDetails.AppDetail.AnnotationValue == 'true')):
@@ -74,8 +64,8 @@ def deploymentConfig(targetPod, chaosDetails, clients):
 		deploymentConfigList = clients.clientDyn.resources.get(api_version="v1", kind="DeploymentConfig", group="apps.openshift.io", label_selector=chaosDetails.AppDetail.Label)
 	except Exception as e:
 		return False, e
-	if None or len(deploymentConfigList.items) == 0:
-		return False, logging.error("no deploymentconfig found with matching labels")
+	if len(deploymentConfigList.items) == 0:
+		return False, ValueError("no deploymentconfig found with matching labels")
 	
 	for dc in deploymentConfigList.items:
 		if str(dc.metadata.annotations.get(chaosDetails.AppDetail.AnnotationKey) != None) == str((chaosDetails.AppDetail.AnnotationValue == 'true')):
@@ -100,8 +90,9 @@ def rollout(targetPod, chaosDetails, clients):
 	try:
 		rolloutList = clients.clientDyn.resources.get(api_version="v1alpha1", kind="Rollout", group="argoproj.io", label_selector=chaosDetails.AppDetail.Label)
 	except Exception as e:
-		return False, logging.error("no rollouts found with matching labels")
-	
+		return False, e
+	if len(rolloutList.items) == 0:
+		return False, ValueError("no rolloutList found with matching labels")
 	for ro in rolloutList.items :
 		if str(ro.metadata.annotations.get(chaosDetails.AppDetail.AnnotationKey) != None) == str((chaosDetails.AppDetail.AnnotationValue == 'true')):
 			rsOwnerRef = targetPod.metadata.owner_references

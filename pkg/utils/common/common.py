@@ -2,16 +2,14 @@
 import time, threading
 import random
 import logging
-logging.basicConfig(format='time=%(asctime)s level=%(levelname)s  msg=%(message)s', level=logging.INFO)  
 import os, sys
-from kubernetes import client
 import signal
 import pkg.types.types as types
 import pkg.events.events as events
 import string
-import random
-from pkg.result.chaosresult import ChaosResults
+import pkg.result.chaosresult as chaosresult
 import pkg.maths.maths as maths
+from kubernetes import client
 
 # ENVDetails contains the ENV details
 class ENVDetails(object):
@@ -57,7 +55,7 @@ def receive_signal(signum, stack):
 # waiting until the abort signal recieved
 def Notify(expname, resultDetails, chaosDetails, eventsDetails, clients):
 	
-	result = ChaosResults()
+	result = chaosresult.ChaosResults()
 	logging.info("[Chaos]: Chaos Experiment Abortion started because of terminated signal received")
 	# updating the chaosresult after stopped
 	failStep = "Chaos injection stopped!"

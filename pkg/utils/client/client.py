@@ -13,15 +13,16 @@ class K8sClient(object):
 # Config maintain configuration for in and out cluster
 class Configuration(object):
 
-    def __init__(self, kubeContext=None, configurations=None):
-        self.kubeContext    = kubeContext
+    def __init__(self, kubeconfig=None, configurations=None):
+        self.kubeconfig    = kubeconfig
         self.configurations =  configurations
     
+    # get_config return the configuration
     def get_config(self):
 
         global configs
-        if self.kubeContext != "":
-            configs = self.kubeContext
+        if self.kubeconfig != "":
+            configs = self.kubeconfig
         elif os.getenv('KUBERNETES_SERVICE_HOST'):
     	    configs = config.load_incluster_config()
         else:
