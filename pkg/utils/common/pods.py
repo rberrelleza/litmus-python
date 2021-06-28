@@ -110,7 +110,7 @@ class Pods(object):
 					return client.V1PodList, err
 				if podTarget == pod.metadata.name :
 					if chaosDetails.AppDetail.AnnotationCheck:
-						isPodAnnotated, err = annotation.IsParentAnnotated(parentName, chaosDetails, clients)
+						isPodAnnotated, err = annotation.IsParentAnnotated(clients, parentName, chaosDetails)
 						if err != None :
 							return client.V1PodList, err
 						
