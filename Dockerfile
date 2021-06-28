@@ -5,10 +5,7 @@ LABEL maintainer="LitmusChaos"
 
 ARG TARGETARCH
 
-# upgrade and setup python
-RUN apt-get update \
-    && apt-get -y install gcc python-pip python3-pip python-dev curl \
-    && pip install --upgrade pip
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 
 # Setup kubectl
 WORKDIR /litmus/kubectl/
