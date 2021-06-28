@@ -26,7 +26,7 @@ help:
 	@echo ""
 
 .PHONY: all
-all: deps buildx build-byoc build-litmus-python trivy-check
+all: deps build build-byoc build-litmus-python trivy-check
 
 .PHONY: deps
 deps: _build_check_docker
@@ -39,7 +39,7 @@ _build_check_docker:
 		&& exit 1; \
 		fi;
 
-.PHONY: buildx
+.PHONY: build
 buildx: docker.buildx image-build
 
 .PHONY: docker.buildx
