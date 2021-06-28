@@ -11,6 +11,9 @@ stages:
 before_script:
   - sleep 15
   - sudo apt-get install -y curl shellcheck
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - docker buildx create --name multiarch --driver docker-container --use
+  - docker buildx inspect --bootstrap
   #Upgrade to Docker CE 19.03 for BuildKit support
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
