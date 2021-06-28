@@ -40,7 +40,7 @@ _build_check_docker:
 		fi;
 
 .PHONY: build
-buildx: docker.buildx image-build
+build: docker.buildx image-build
 
 .PHONY: docker.buildx
 docker.buildx:
