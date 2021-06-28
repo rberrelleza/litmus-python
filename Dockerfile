@@ -5,12 +5,11 @@ LABEL maintainer="LitmusChaos"
 
 ARG TARGETARCH
 
-ARG DEBIAN_FRONTEND=noninteractive
 
-RUN \
-  apt-get update -y && \
-  apt-get install -y apt-utils 2>&1 | grep -v "debconf: delaying package configuration, since apt-utils is not installed" && \
-  apt-get install -y --no-install-recommends package1,package2,...
+# upgrade and setup python
+RUN apt-get update \
+    && apt-get -y install gcc python-pip python3-pip python-dev curl \
+    && pip install --upgrade pip
 
 # Setup kubectl
 WORKDIR /litmus/kubectl/
