@@ -18,7 +18,7 @@ help:
 	@echo ""
 	@echo "Usage:-"
 	@echo "\tmake deps          	-- sets up dependencies for image build"
-	@echo "\tmake build   			 -- docker multi-arch image"
+	@echo "\tmake build   			-- docker multi-arch image"
 	@echo "\tmake build-amd64   	-- builds the litmus-py docker amd64 image"
 	@echo "\tmake push-amd64    	-- pushes the litmus-py amd64 image"
 	@echo "\tmake build-amd64-byoc  -- builds the chaostest docker amd64 image"
@@ -92,7 +92,7 @@ push-chaostoolkit:
 	@echo "-------------------"
 	@echo "--> chaostoolkit image" 
 	@echo "-------------------"
-	REPONAME="$(DOCKER_REPO)" IMGNAME="$(DOCKER_IMAGE)" IMGTAG="$(DOCKER_TAG)" .byoc/buildscripts/push
+	REPONAME="$(DOCKER_REPO)" IMGNAME="$(DOCKER_IMAGE)" IMGTAG="$(DOCKER_TAG)" ./build/push
 
 .PHONY: trivy-check
 trivy-check:
