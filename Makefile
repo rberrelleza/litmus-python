@@ -40,10 +40,10 @@ _build_check_docker:
 		fi;
 
 .PHONY: build
-build: docker.buildx image-build
+build: docker-buildx image-build
 
-.PHONY: docker.buildx
-docker.buildx:
+.PHONY: docker-buildx
+docker-buildx:
 	@echo "------------------------------"
 	@echo "--> Setting up Builder        " 
 	@echo "------------------------------"
