@@ -5,7 +5,12 @@ LABEL maintainer="LitmusChaos"
 
 ARG TARGETARCH
 
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN \
+  apt-get update -y && \
+  apt-get install -y apt-utils 2>&1 | grep -v "debconf: delaying package configuration, since apt-utils is not installed" && \
+  apt-get install -y --no-install-recommends package1,package2,...
 
 # Setup kubectl
 WORKDIR /litmus/kubectl/
