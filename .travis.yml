@@ -25,7 +25,7 @@ jobs:
     - stage: build docker images
       name: build docker image litmus-python
       script:
-      - make buildx
+      - make build
       - make build-litmus-python
 
 notifications:
