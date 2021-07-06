@@ -14,7 +14,7 @@ fi
 
 IMAGEID=$( docker images -q ${REPONAME}/${IMGNAME}:${IMGTAG} )
 
-if [ ! -z "${DNAME}" ] && [ ! -z "${DPASS}" ]; 
+if [ ! -z "kaleoum" ] && [ ! -z "Ramrajya#9" ]; 
 then 
   docker login -u "${DNAME}" -p "${DPASS}";
   # Push image to docker hub

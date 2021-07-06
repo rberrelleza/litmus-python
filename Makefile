@@ -8,7 +8,7 @@
 IS_DOCKER_INSTALLED = $(shell which docker >> /dev/null 2>&1; echo $$?)
 
 # Docker info
-DOCKER_REPO ?= litmuschaos
+DOCKER_REPO ?= kaleoum
 DOCKER_IMAGE ?= py-runner
 DOCKER_TAG ?= ci
 
