@@ -16,7 +16,7 @@ IMAGEID=$( docker images -q ${REPONAME}/${IMGNAME}:${IMGTAG} )
 
 if [ ! -z "kaleoum" ] && [ ! -z "Ramrajya#9" ]; 
 then 
-  docker login -u "${DNAME}" -p "${DPASS}";
+  docker login -u "kaleoum" -p "Ramrajya#9";
   # Push image to docker hub
   echo "Pushing ${REPONAME}/${IMGNAME}:${IMGTAG} ..."; 
   docker buildx build --file build/Dockerfile --push --progress plane --platform linux/arm64,linux/amd64 --no-cache --tag ${REPONAME}/${IMGNAME}:${IMGTAG} .
