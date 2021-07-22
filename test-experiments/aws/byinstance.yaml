@@ -1,0 +1,221 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: custom-chaos-workflow-1626852909
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: 8b195d98-821d-423d-954f-5c80d44518c5
+    subject: custom-chaos-workflow_litmus
+    workflow_id: 80427446-cedd-42ec-b4e5-080ae7646529
+    workflows.argoproj.io/controller-instanceid: 8b195d98-821d-423d-954f-5c80d44518c5
+spec:
+  templates:
+    - name: custom-chaos
+      arguments: {}
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: aws-ssm-chaos-by-id
+            template: aws-ssm-chaos-by-id
+            arguments: {}
+        - - name: revert-chaos
+            template: revert-chaos
+            arguments: {}
+    - name: install-chaos-experiments
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: aws-ssm-chaos-by-id
+            path: /tmp/aws-ssm-chaos-by-id.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                description:
+                  message: |
+                    Execute AWS SSM Chaos on given ec2 instance IDs
+                kind: ChaosExperiment
+                metadata:
+                  name: aws-ssm-chaos-by-id
+                  labels:
+                    name: aws-ssm-chaos-by-id
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 1.13.8
+                spec:
+                  definition:
+                    scope: Cluster
+                    permissions:
+                      - apiGroups:
+                          - ""
+                          - batch
+                          - litmuschaos.io
+                        resources:
+                          - jobs
+                          - pods
+                          - events
+                          - pods/log
+                          - pods/exec
+                          - secrets
+                          - configmaps
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                    image: litmuschaos/go-runner:1.13.8
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name aws-ssm-chaos-by-id
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "60"
+                      - name: CHAOS_INTERVAL
+                        value: "60"
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: EC2_INSTANCE_ID
+                        value: ""
+                      - name: REGION
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                      - name: AWS_SHARED_CREDENTIALS_FILE
+                        value: /tmp/cloud_config.yml
+                      - name: DOCUMENT_NAME
+                        value: ""
+                      - name: DOCUMENT_TYPE
+                        value: ""
+                      - name: DOCUMENT_FORMAT
+                        value: ""
+                      - name: DOCUMENT_PATH
+                        value: ""
+                      - name: INSTALL_DEPENDENCIES
+                        value: "True"
+                      - name: NUMBER_OF_WORKERS
+                        value: "1"
+                      - name: MEMORY_PERCENTAGE
+                        value: "80"
+                      - name: CPU_CORE
+                        value: "0"
+                      - name: LIB
+                        value: litmus
+                    labels:
+                      name: aws-ssm-chaos-by-id
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/version: 1.13.8
+                    secrets:
+                      - name: cloud-secret
+                        mountPath: /tmp/
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: litmuschaos/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/aws-ssm-chaos-by-id.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: aws-ssm-chaos-by-id
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: aws-ssm-chaos-by-id
+            path: /tmp/chaosengine-aws-ssm-chaos-by-id.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: aws-ssm-chaos-by-id
+                  labels:
+                    instance_id: 88891df8-2bc7-44ef-ae31-89744a460645
+                    workflow_name: custom-chaos-workflow-1626852909
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: aws-ssm-chaos-by-id
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "60"
+                            - name: EC2_INSTANCE_ID
+                              value: i-0d0468031111eb1e2
+                            - name: REGION
+                              value: eu-west-2
+                            - name: MEMORY_PERCENTAGE
+                              value: "80"
+                            - name: CPU_CORE
+                              value: "0"
+                            - name: DOCUMENT_NAME
+                              value: ""
+                            - name: DOCUMENT_TYPE
+                              value: ""
+                            - name: DOCUMENT_FORMAT
+                              value: ""
+                            - name: DOCUMENT_PATH
+                              value: ""
+                            - name: INSTALL_DEPENDENCIES
+                              value: "True"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: litmuschaos/litmus-checker:latest
+        args:
+          - -file=/tmp/chaosengine-aws-ssm-chaos-by-id.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+    - name: revert-chaos
+      arguments: {}
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: litmuschaos/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (88891df8-2bc7-44ef-ae31-89744a460645, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt

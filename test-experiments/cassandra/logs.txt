@@ -1,0 +1,198 @@
+W0722 12:52:36.427469       1 client_config.go:541] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+time="2021-07-22T12:52:36Z" level=info msg="Experiment Name: cassandra-pod-delete"
+time="2021-07-22T12:52:36Z" level=info msg="[PreReq]: Getting the ENV for the cassandra-pod-delete experiment"
+time="2021-07-22T12:52:36Z" level=info msg="[PreReq]: Updating the chaos result of cassandra-pod-delete experiment (SOT)"
+time="2021-07-22T12:52:38Z" level=info msg="The application informations are as follows" CassandraPort=9042 Ramp Time=0 Seq := Namespace=cassandra Label="app=cassandra" CassandraLivenessImage="litmuschaos/cassandra-client:latest" CassandraLivenessCheck=enabled
+time="2021-07-22T12:52:38Z" level=info msg="[Status]: Verify that the AUT (Application Under Test) is running (pre-chaos)"
+time="2021-07-22T12:52:38Z" level=info msg="[Status]: Checking whether application containers are in ready state"
+time="2021-07-22T12:52:38Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:52:38Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-1 Readiness=true container=cassandra
+time="2021-07-22T12:52:38Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-2 Readiness=true container=cassandra
+time="2021-07-22T12:52:40Z" level=info msg="[Status]: Checking whether application pods are in running state"
+time="2021-07-22T12:52:40Z" level=info msg="[Status]: The status of Pods are as follows" Status=Running Pod=cassandra-0
+time="2021-07-22T12:52:40Z" level=info msg="[Status]: The status of Pods are as follows" Pod=cassandra-1 Status=Running
+time="2021-07-22T12:52:40Z" level=info msg="[Status]: The status of Pods are as follows" Status=Running Pod=cassandra-2
+time="2021-07-22T12:52:42Z" level=info msg="[Status]: Checking the load distribution on the ring (pre-chaos)"
+time="2021-07-22T12:52:42Z" level=info msg="[NodeToolStatus]: Selecting cassandra-0 pod for running `nodetool status` command"
+time="2021-07-22T12:52:42Z" level=info msg="[Check]: Checking for the distribution of load on the ring"
+time="2021-07-22T12:52:53Z" level=info msg="[Check]: Load is distributed over all the replica of cassandra"
+time="2021-07-22T12:52:54Z" level=info msg="Liveness Deployment Created successfully!"
+time="2021-07-22T12:52:54Z" level=info msg="Liveness service created successfully!"
+time="2021-07-22T12:52:54Z" level=info msg="[Status]: Checking the status of the cassandra liveness pod"
+time="2021-07-22T12:52:54Z" level=info msg="[Status]: Checking whether application containers are in ready state"
+time="2021-07-22T12:52:56Z" level=info msg="[Status]: Checking whether application pods are in running state"
+time="2021-07-22T12:55:08Z" level=info msg="[Status]: The status of Pods are as follows" Pod=cassandra-liveness-deploy-byttdc-6fbb586bf-vhkk9 Status=Running
+time="2021-07-22T12:55:10Z" level=info msg="[Confirmation]: The cassandra application liveness pod created successfully"
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:55:10Z" level=info msg="[Chaos]:Number of pods targeted: 33"
+time="2021-07-22T12:55:10Z" level=info msg="Target pods list: [cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2]"
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:10Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:11Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:11Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:11Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:11Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:12Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:12Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:12Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:12Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:12Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:13Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:13Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:13Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:13Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:13Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:14Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:14Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:14Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:14Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:14Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:15Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:16Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:16Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:17Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:55:18Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:55:19Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:55:19Z" level=info msg="[Wait]: Wait for the chaos interval 15s"
+time="2021-07-22T12:55:34Z" level=info msg="[Status]: Verification for the recreation of application pod"
+time="2021-07-22T12:55:34Z" level=info msg="[Status]: Checking whether application containers are in ready state"
+time="2021-07-22T12:56:02Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:04Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:06Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:08Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:10Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:12Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:14Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:17Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:19Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:21Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:23Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:25Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:27Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:56:29Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:31Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:56:33Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:35Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:37Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:39Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:41Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:56:43Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:45Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:47Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:49Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:51Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:56:53Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:53Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:56:55Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:55Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-1
+time="2021-07-22T12:56:57Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:56:57Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:56:59Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:56:59Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:01Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:01Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:04Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:04Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:06Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:06Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:08Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:57:08Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:10Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:10Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-1
+time="2021-07-22T12:57:12Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:12Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:14Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:14Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-1
+time="2021-07-22T12:57:17Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:17Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:19Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:57:19Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:21Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:57:21Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:23Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:23Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:25Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:25Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:27Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:57:27Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:29Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-0 Readiness=true container=cassandra
+time="2021-07-22T12:57:29Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-1 Readiness=true
+time="2021-07-22T12:57:31Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:31Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-1 Readiness=true container=cassandra
+time="2021-07-22T12:57:33Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:57:33Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-1
+time="2021-07-22T12:57:35Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:57:35Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-1 Readiness=true container=cassandra
+time="2021-07-22T12:57:35Z" level=info msg="[Status]: The Container status are as follows" Pod=cassandra-2 Readiness=true container=cassandra
+time="2021-07-22T12:57:37Z" level=info msg="[Status]: Checking whether application pods are in running state"
+time="2021-07-22T12:57:37Z" level=info msg="[Status]: The status of Pods are as follows" Pod=cassandra-0 Status=Running
+time="2021-07-22T12:57:37Z" level=info msg="[Status]: The status of Pods are as follows" Pod=cassandra-1 Status=Running
+time="2021-07-22T12:57:37Z" level=info msg="[Status]: The status of Pods are as follows" Status=Running Pod=cassandra-2
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: chaos candidate of kind: statefulset, name: cassandra, namespace: cassandra"
+time="2021-07-22T12:57:39Z" level=info msg="[Chaos]:Number of pods targeted: 33"
+time="2021-07-22T12:57:39Z" level=info msg="Target pods list: [cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1 cassandra-2 cassandra-0 cassandra-1]"
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:39Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:40Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:41Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:41Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:41Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:41Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:41Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:42Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:42Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:42Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:42Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:43Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:44Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:44Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:44Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-2
+time="2021-07-22T12:57:44Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-0
+time="2021-07-22T12:57:45Z" level=info msg="[Info]: Killing the following pods" PodName=cassandra-1
+time="2021-07-22T12:57:45Z" level=info msg="[Wait]: Wait for the chaos interval 15s"
+time="2021-07-22T12:58:00Z" level=info msg="[Status]: Verification for the recreation of application pod"
+time="2021-07-22T12:58:00Z" level=info msg="[Status]: Checking whether application containers are in ready state"
+time="2021-07-22T12:58:00Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:58:02Z" level=info msg="[Status]: The Container status are as follows" Readiness=true container=cassandra Pod=cassandra-0
+time="2021-07-22T12:58:04Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:58:06Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:58:09Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:58:11Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:58:13Z" level=info msg="[Status]: Checking whether application pods are in running state"
+time="2021-07-22T12:58:13Z" level=info msg="[Status]: The status of Pods are as follows" Status=Running Pod=cassandra-0
+time="2021-07-22T12:58:15Z" level=info msg="[Completion]: cassandra-pod-delete chaos is done"
+time="2021-07-22T12:58:15Z" level=info msg="[Confirmation]: cassandra-pod-delete chaos has been injected successfully"
+time="2021-07-22T12:58:15Z" level=info msg="[Status]: Verify that the AUT (Application Under Test) is running (post-chaos)"
+time="2021-07-22T12:58:15Z" level=info msg="[Status]: Checking whether application containers are in ready state"
+time="2021-07-22T12:58:15Z" level=info msg="[Status]: The Container status are as follows" container=cassandra Pod=cassandra-0 Readiness=true
+time="2021-07-22T12:58:17Z" level=info msg="[Status]: Checking whether application pods are in running state"
+time="2021-07-22T12:58:17Z" level=info msg="[Status]: The status of Pods are as follows" Pod=cassandra-0 Status=Running
+time="2021-07-22T12:58:19Z" level=info msg="[Status]: Checking the load distribution on the ring (post-chaos)"
+time="2021-07-22T12:58:19Z" level=info msg="[NodeToolStatus]: Selecting cassandra-0 pod for running `nodetool status` command"
+time="2021-07-22T12:58:19Z" level=info msg="[Check]: Checking for the distribution of load on the ring"
+time="2021-07-22T12:58:25Z" level=error msg="[Status]: Chaos node tool status check is failed, err: load percentage check failed, err: failed to get the load on every replica"

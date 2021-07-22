@@ -1,0 +1,30 @@
+API Version:  litmuschaos.io/v1alpha1
+Kind:         ChaosResult
+Metadata:
+  Creation Timestamp:  2021-07-22T13:23:17Z
+  Generation:          2
+  Resource Version:    148624
+  Self Link:           /apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosresults/cassandra-pod-deletect7zf-cassandra-pod-delete
+  UID:                 de4579d2-8d33-4144-9974-4c65df1b6f6f
+Spec:
+  Engine:      cassandra-pod-deletect7zf
+  Experiment:  cassandra-pod-delete
+Status:
+  Experiment Status:
+    Fail Step:                 N/A
+    Phase:                     Completed
+    Probe Success Percentage:  100
+    Verdict:                   Pass
+  History:
+    Failed Runs:   0
+    Passed Runs:   1
+    Stopped Runs:  0
+    Targets:
+      Chaos Status:  targeted
+      Kind:          statefulset
+      Name:          cassandra
+Events:
+  Type    Reason   Age    From                               Message
+  ----    ------   ----   ----                               -------
+  Normal  Awaited  3m27s  cassandra-pod-delete-x6h6et-fn5b8  experiment: cassandra-pod-delete, Result: Awaited
+  Normal  Pass     23s    cassandra-pod-delete-x6h6et-fn5b8  experiment: cassandra-pod-delete, Result: Pass

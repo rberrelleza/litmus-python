@@ -1,0 +1,196 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: chaos-workflow-1626957394
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: 8459065b-f244-4fce-ab40-a45af87abc72
+    subject: chaos-workflow_litmus
+    workflow_id: 5f3ccab6-42b1-4b08-9b67-6def08570560
+    workflows.argoproj.io/controller-instanceid: 8459065b-f244-4fce-ab40-a45af87abc72
+spec:
+  templates:
+    - name: custom-chaos
+      arguments: {}
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: cassandra-pod-delete
+            template: cassandra-pod-delete
+            arguments: {}
+    - name: install-chaos-experiments
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: cassandra-pod-delete
+            path: /tmp/cassandra-pod-delete.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                description:
+                  message: |
+                    Deletes a pod belonging to a casandra statefulset
+                kind: ChaosExperiment
+                metadata:
+                  name: cassandra-pod-delete
+                  labels:
+                    name: cassandra-pod-delete
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 1.13.8
+                spec:
+                  definition:
+                    scope: Namespaced
+                    permissions:
+                      - apiGroups:
+                          - ""
+                          - apps
+                          - batch
+                          - litmuschaos.io
+                        resources:
+                          - deployments
+                          - statefulsets
+                          - jobs
+                          - pods
+                          - pods/log
+                          - pods/exec
+                          - services
+                          - events
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                          - deletecollection
+                    image: kaleoum/go-runner:ci2
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name cassandra-pod-delete
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: CASSANDRA_SVC_NAME
+                        value: ""
+                      - name: KEYSPACE_REPLICATION_FACTOR
+                        value: ""
+                      - name: CASSANDRA_PORT
+                        value: "9042"
+                      - name: LIVENESS_SVC_PORT
+                        value: "8088"
+                      - name: CASSANDRA_LIVENESS_IMAGE
+                        value: litmuschaos/cassandra-client:latest
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "15"
+                      - name: PODS_AFFECTED_PERC
+                        value: ""
+                      - name: CHAOS_INTERVAL
+                        value: "15"
+                      - name: CASSANDRA_LIVENESS_CHECK
+                        value: enabled
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: FORCE
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                      - name: LIB
+                        value: litmus
+                    labels:
+                      name: cassandra-pod-delete
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/version: 1.13.8
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: litmuschaos/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/cassandra-pod-delete.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: cassandra-pod-delete
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: cassandra-pod-delete
+            path: /tmp/chaosengine-cassandra-pod-delete.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: cassandra-pod-delete
+                  labels:
+                    instance_id: 8c8f76e7-6f6f-4650-b73e-964ea48d514b
+                    workflow_name: chaos-workflow-1626957394
+                spec:
+                  appinfo:
+                    appns: cassandra
+                    applabel: app=cassandra
+                    appkind: statefulset
+                  jobCleanUpPolicy: retain
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: cassandra-pod-delete
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "155"
+                            - name: CHAOS_INTERVAL
+                              value: "15"
+                            - name: FORCE
+                              value: "false"
+                            - name: CASSANDRA_SVC_NAME
+                              value: cassandra
+                            - name: KEYSPACE_REPLICATION_FACTOR
+                              value: "3"
+                            - name: CASSANDRA_PORT
+                              value: "9042"
+                            - name: CASSANDRA_LIVENESS_CHECK
+                              value: enabled
+                            - name: PODS_AFFECTED_PERC
+                              value: "1112"
+                        probe: []
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: litmuschaos/litmus-checker:latest
+        args:
+          - -file=/tmp/chaosengine-cassandra-pod-delete.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt

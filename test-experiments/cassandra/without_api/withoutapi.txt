@@ -1,0 +1,87 @@
+us
+Name:         cassandra-pod-delete
+Namespace:    litmus
+Labels:       app.kubernetes.io/component=chaosexperiment
+              app.kubernetes.io/part-of=litmus
+              app.kubernetes.io/version=1.13.8
+              name=cassandra-pod-delete
+Annotations:  <none>
+API Version:  litmuschaos.io/v1alpha1
+Description:
+  Message:  Deletes a pod belonging to a casandra statefulset
+
+Kind:  ChaosExperiment
+Metadata:
+  Creation Timestamp:  2021-07-22T13:21:12Z
+  Generation:          1
+  Resource Version:    146939
+  Self Link:           /apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosexperiments/cassandra-pod-delete
+  UID:                 40a57365-6c8d-4417-b30b-3f628f42b294
+Spec:
+  Definition:
+    Args:
+      -c
+      ./experiments -name cassandra-pod-delete
+    Command:
+      /bin/bash
+    Env:
+      Name:             CASSANDRA_SVC_NAME
+      Value:            
+      Name:             KEYSPACE_REPLICATION_FACTOR
+      Value:            
+      Name:             CASSANDRA_PORT
+      Value:            9042
+      Name:             LIVENESS_SVC_PORT
+      Value:            8088
+      Name:             CASSANDRA_LIVENESS_IMAGE
+      Value:            litmuschaos/cassandra-client:latest
+      Name:             TOTAL_CHAOS_DURATION
+      Value:            15
+      Name:             PODS_AFFECTED_PERC
+      Value:            
+      Name:             CHAOS_INTERVAL
+      Value:            15
+      Name:             CASSANDRA_LIVENESS_CHECK
+      Value:            
+      Name:             RAMP_TIME
+      Value:            
+      Name:             FORCE
+      Value:            
+      Name:             SEQUENCE
+      Value:            parallel
+      Name:             LIB
+      Value:            litmus
+    Image:              kaleoum/go-runner:ci2
+    Image Pull Policy:  Always
+    Labels:
+      app.kubernetes.io/component:  experiment-job
+      app.kubernetes.io/part-of:    litmus
+      app.kubernetes.io/version:    1.13.8
+      Name:                         cassandra-pod-delete
+    Permissions:
+      API Groups:
+        
+        apps
+        batch
+      Resources:
+        deployments
+        statefulsets
+        jobs
+        pods
+        pods/log
+        pods/exec
+        services
+        events
+        chaosengines
+        chaosexperiments
+        chaosresults
+      Verbs:
+        create
+        list
+        get
+        patch
+        update
+        delete
+        deletecollection
+    Scope:  Namespaced
+Events:     <none>

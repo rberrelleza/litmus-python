@@ -1,0 +1,251 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: custom-chaos-workflow-1626848399
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: 8b195d98-821d-423d-954f-5c80d44518c5
+    subject: custom-chaos-workflow_litmus
+    workflow_id: e970b3e4-ff14-4a73-9224-0cf2180ebfe3
+    workflows.argoproj.io/controller-instanceid: 8b195d98-821d-423d-954f-5c80d44518c5
+spec:
+  templates:
+    - name: custom-chaos
+      arguments: {}
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: kafka-broker-pod-failure
+            template: kafka-broker-pod-failure
+            arguments: {}
+        - - name: revert-chaos
+            template: revert-chaos
+            arguments: {}
+    - name: install-chaos-experiments
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: kafka-broker-pod-failure
+            path: /tmp/kafka-broker-pod-failure.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                description:
+                  message: |
+                    Deleting a kafka broker pod
+                kind: ChaosExperiment
+                metadata:
+                  name: kafka-broker-pod-failure
+                  labels:
+                    name: kafka-broker-pod-failure
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 1.13.8
+                spec:
+                  definition:
+                    scope: Cluster
+                    permissions:
+                      - apiGroups:
+                          - ""
+                          - apps
+                          - batch
+                          - litmuschaos.io
+                        resources:
+                          - statefulsets
+                          - deployments
+                          - events
+                          - pods/log
+                          - configmaps
+                          - jobs
+                          - pods
+                          - pods/exec
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - get
+                          - delete
+                          - list
+                          - update
+                          - patch
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - nodes
+                        verbs:
+                          - get
+                          - list
+                    image: litmuschaos/go-runner:1.13.8
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name kafka-broker-pod-failure
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: KAFKA_KIND
+                        value: statefulset
+                      - name: KAFKA_LIVENESS_STREAM
+                        value: enabled
+                      - name: KAFKA_LIVENESS_IMAGE
+                        value: litmuschaos/kafka-client:ci
+                      - name: KAFKA_CONSUMER_TIMEOUT
+                        value: "30000"
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "15"
+                      - name: CHAOS_INTERVAL
+                        value: "5"
+                      - name: SEQUENCE
+                        value: parallel
+                      - name: FORCE
+                        value: "true"
+                      - name: KAFKA_INSTANCE_NAME
+                        value: ""
+                      - name: KAFKA_NAMESPACE
+                        value: ""
+                      - name: KAFKA_LABEL
+                        value: ""
+                      - name: KAFKA_BROKER
+                        value: ""
+                      - name: KAFKA_REPLICATION_FACTOR
+                        value: ""
+                      - name: KAFKA_SERVICE
+                        value: ""
+                      - name: KAFKA_PORT
+                        value: ""
+                      - name: ZOOKEEPER_NAMESPACE
+                        value: ""
+                      - name: ZOOKEEPER_LABEL
+                        value: ""
+                      - name: ZOOKEEPER_SERVICE
+                        value: ""
+                      - name: ZOOKEEPER_PORT
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                    labels:
+                      name: kafka-broker-pod-failure
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/version: 1.13.8
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: litmuschaos/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/kafka-broker-pod-failure.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: kafka-broker-pod-failure
+      arguments: {}
+      inputs:
+        artifacts:
+          - name: kafka-broker-pod-failure
+            path: /tmp/chaosengine-kafka-broker-pod-failure.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: kafka-broker-pod-failure
+                  labels:
+                    instance_id: 334d503b-8886-4774-9ac5-4022e78c8b1d
+                    context: kafka-broker-pod-failure_litmus
+                    workflow_name: custom-chaos-workflow-1626848399
+                spec:
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  appinfo:
+                    appns: default
+                    applabel: app=cp-kafka
+                    appkind: statefulset
+                  jobCleanUpPolicy: retain
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: kafka-broker-pod-failure
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: KAFKA_REPLICATION_FACTOR
+                              value: "3"
+                            - name: KAFKA_LABEL
+                              value: app=cp-kafka
+                            - name: KAFKA_NAMESPACE
+                              value: default
+                            - name: KAFKA_SERVICE
+                              value: kafka-cp-kafka-headless
+                            - name: KAFKA_PORT
+                              value: "9092"
+                            - name: KAFKA_CONSUMER_TIMEOUT
+                              value: "30000"
+                            - name: KAFKA_INSTANCE_NAME
+                              value: ""
+                            - name: ZOOKEEPER_NAMESPACE
+                              value: default
+                            - name: ZOOKEEPER_LABEL
+                              value: app=cp-zookeeper
+                            - name: ZOOKEEPER_SERVICE
+                              value: kafka-cp-zookeeper-headless
+                            - name: ZOOKEEPER_PORT
+                              value: "2181"
+                            - name: CHAOS_INTERVAL
+                              value: "20"
+                            - name: FORCE
+                              value: "false"
+                        probe: []
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: litmuschaos/litmus-checker:latest
+        args:
+          - -file=/tmp/chaosengine-kafka-broker-pod-failure.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+    - name: revert-chaos
+      arguments: {}
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: litmuschaos/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (334d503b-8886-4774-9ac5-4022e78c8b1d, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt

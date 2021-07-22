@@ -1,0 +1,72 @@
+Name:         cassandra-pod-deletect7zf
+Namespace:    litmus
+Labels:       instance_id=a148dd9b-f6fc-43f0-83fe-02441bd9f04a
+              workflow_name=chaos-workflow-1626960051
+Annotations:  <none>
+API Version:  litmuschaos.io/v1alpha1
+Kind:         ChaosEngine
+Metadata:
+  Creation Timestamp:  2021-07-22T13:21:58Z
+  Finalizers:
+    chaosengine.litmuschaos.io/finalizer
+  Generate Name:     cassandra-pod-delete
+  Generation:        36
+  Resource Version:  148704
+  Self Link:         /apis/litmuschaos.io/v1alpha1/namespaces/litmus/chaosengines/cassandra-pod-deletect7zf
+  UID:               b38df216-9f1b-4fca-bc77-b1b8d18edaea
+Spec:
+  Annotation Check:  false
+  Appinfo:
+    Appkind:              statefulset
+    Applabel:             app=cassandra
+    Appns:                cassandra
+  Chaos Service Account:  litmus-admin
+  Components:
+    Runner:
+      Image:  litmuschaos/chaos-runner:1.13.6
+      Resources:
+  Engine State:  stop
+  Experiments:
+    Name:  cassandra-pod-delete
+    Spec:
+      Components:
+        Env:
+          Name:   TOTAL_CHAOS_DURATION
+          Value:  65
+          Name:   CHAOS_INTERVAL
+          Value:  15
+          Name:   FORCE
+          Value:  false
+          Name:   CASSANDRA_SVC_NAME
+          Value:  cassandra
+          Name:   KEYSPACE_REPLICATION_FACTOR
+          Value:  3
+          Name:   CASSANDRA_PORT
+          Value:  9042
+          Name:   CASSANDRA_LIVENESS_CHECK
+          Name:   PODS_AFFECTED_PERC
+          Value:  100
+        Resources:
+        Status Check Timeouts:
+  Job Clean Up Policy:  retain
+Status:
+  Engine Status:  completed
+  Experiments:
+    Experiment Pod:    cassandra-pod-delete-x6h6et-fn5b8
+    Last Update Time:  2021-07-22T13:26:34Z
+    Name:              cassandra-pod-delete
+    Runner:            cassandra-pod-deletect7zf-runner
+    Status:            Completed
+    Verdict:           Pass
+Events:
+  Type    Reason                     Age                   From                               Message
+  ----    ------                     ----                  ----                               -------
+  Normal  ChaosEngineInitialized     6m34s                 chaos-operator                     Identifying app under test & launching cassandra-pod-deletect7zf-runner
+  Normal  ExperimentJobCreate        6m26s                 cassandra-pod-deletect7zf-runner   Experiment Job cassandra-pod-delete-x6h6et for Chaos Experiment: cassandra-pod-delete
+  Normal  ExperimentDependencyCheck  6m26s                 cassandra-pod-deletect7zf-runner   Experiment resources validated for Chaos Experiment: cassandra-pod-delete
+  Normal  PreChaosCheck              5m12s                 cassandra-pod-delete-x6h6et-fn5b8  AUT: Running
+  Normal  ChaosInject                4m43s (x2 over 5m2s)  cassandra-pod-delete-x6h6et-fn5b8  Injecting cassandra-pod-delete chaos on application pod
+  Normal  PostChaosCheck             2m20s                 cassandra-pod-delete-x6h6et-fn5b8  AUT: Running
+  Normal  Summary                    2m11s                 cassandra-pod-delete-x6h6et-fn5b8  cassandra-pod-delete experiment has been Passed
+  Normal  ExperimentJobCleanUp       119s                  cassandra-pod-deletect7zf-runner   Experiment Job cassandra-pod-delete-x6h6et will be retained
+  Normal  ChaosEngineCompleted       118s                  chaos-operator                     ChaosEngine completed, will delete or retain the resources according to jobCleanUpPolicy
