@@ -1,3 +1,5 @@
+[![codecov.io](https://codecov.io/github/codecov/codecov-python/coverage.svg?branch=pod_delete)](https://codecov.io/github/codecov/codecov-python)
+![PyPI](https://img.shields.io/pypi/v/codecov)
 ### litmus-python:
 
 - This repo consists of Litmus Chaos Experiments written in python. The examples in this repo are good indicators
