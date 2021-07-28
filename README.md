@@ -1,4 +1,4 @@
-[![codecov.io](https://codecov.io/github/codecov/codecov-python/coverage.svg?branch=pod_delete)](https://codecov.io/github/codecov/codecov-python)
+[![codecov.io](https://codecov.io/github/codecov/codecov-python/coverage.svg?branch=pod_delete)](https://codecov.io/github/oumkale/litmus-python)
 ![PyPI](https://img.shields.io/pypi/v/codecov)
 ### litmus-python:
 
