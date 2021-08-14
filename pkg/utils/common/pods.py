@@ -128,7 +128,6 @@ class Pods(object):
 		filteredPods = []
 		realPods = []
 		for pod in nonChaosPods.items:
-		
 			parentName, err = annotation.GetParentName(clients, pod, chaosDetails)
 		
 			if err != None:
@@ -144,8 +143,7 @@ class Pods(object):
 					filteredPods.append(pod)
 					logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s", chaosDetails.AppDetail.Kind, parentName, chaosDetails.AppDetail.Namespace)
 			else:
-				for pod in nonChaosPods.items:
-					filteredPods.append(pod)
+				filteredPods.append(pod)
 				logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s", chaosDetails.AppDetail.Kind, parentName, chaosDetails.AppDetail.Namespace)
 		
 		if len(filteredPods) == 0:
@@ -153,7 +151,7 @@ class Pods(object):
 			
 		newPodListLength = max(1, maths.Adjustment(podAffPerc, len(filteredPods)))
 		
-		# it will generate the random podlist
+  		# it will generate the random podlist
 		# it starts from the random index and choose requirement no of pods next to that index in a circular way.
 		index = random.randint(0,len(filteredPods)-1)
 		for i in range(int(newPodListLength)):
