@@ -238,7 +238,7 @@ Follow the steps provided below to setup okteto & test the experiment execution.
       'experiments/sample_category/sample_exec_chaos',
       'experiments/sample_category/sample_exec_chaos/experiment',
       ```
-    - Add `&` operator at the end of chaos commands `CHAOS_INJECT_COMMAND` and `CHAOS_KILL_COMMAND` example: `md5sum /dev/zero &`. 
+    - Add `&` operator at the end of chaos commands `CHAOS_INJECT_COMMAND` example: `md5sum /dev/zero &`. 
       As we are running chaos commands as a background process in a separate thread.  
     - Import main file it in bin/experiment/experiment.py and add case. example: line number 3 in experiment.py 
     - Then go to root(litmus-python) and run `python3 setup.py install`

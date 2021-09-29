@@ -141,15 +141,13 @@ class Pods(object):
 				
 				if isParentAnnotated:
 					filteredPods.append(pod)
-					logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s", chaosDetails.AppDetail.Kind, parentName, chaosDetails.AppDetail.Namespace)
 			else:
 				filteredPods.append(pod)
-				logging.info("[Info]: chaos candidate of kind: %s, name: %s, namespace: %s", chaosDetails.AppDetail.Kind, parentName, chaosDetails.AppDetail.Namespace)
-		
+
 		if len(filteredPods) == 0:
 			return client.V1PodList(items=filteredPods), ValueError("No target pod found")
 			
-		newPodListLength = max(1, maths.Adjustment(podAffPerc, len(filteredPods)))
+		newPodListLength = max(1, maths.Adjustment(min(podAffPerc,100), len(filteredPods)))
 		
   		# it will generate the random podlist
 		# it starts from the random index and choose requirement no of pods next to that index in a circular way.
