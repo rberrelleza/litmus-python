@@ -28,7 +28,7 @@ class Pods(object):
 			if err != None :
 				return False, err			
 			if not isPodsAvailable:
-				return isPodsAvailable, None
+				return isPodsAvailable, ValueError("{} pod is not available in {} namespace".format(pod.metadata.name, namespace))
 
 		return True, None
 
