@@ -70,6 +70,14 @@ packages = [
 	'experiments',
 	'experiments/generic',
 	'experiments/generic/pod_delete',
+	'chaosLib/litmus/sample_exec_chaos',
+	'chaosLib/litmus/sample_exec_chaos/lib',
+	'pkg/sample_category',
+	'pkg/sample_category/environment',
+	'pkg/sample_category/types',
+	'experiments/sample_category',
+	'experiments/sample_category/sample_exec_chaos',
+	'experiments/sample_category/sample_exec_chaos/experiment',
 ]
 needs_pytest = set(['pytest', 'test']).intersection(sys.argv)
 package_data = {
